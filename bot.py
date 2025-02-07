@@ -22,9 +22,9 @@ async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
     document = update.message.document
     file = await document.get_file()
     
-    # Specify the local path to download the file
+    # Create a path to save the file
     file_path = os.path.join(os.getcwd(), document.file_name)
-    await file.download(file_path)
+    await file.download(file_path)  # Ensure this is the correct usage
 
     compressed_file_path = compress_pdf(file_path)
 
@@ -43,7 +43,7 @@ def run_flask():
 
 def main():
     application = ApplicationBuilder().token(TOKEN).build()
-    
+
     # Add handlers directly to the application
     application.add_handler(CommandHandler("start", start))
     application.add_handler(MessageHandler(filters.Document.MimeType("application/pdf"), handle_document))
