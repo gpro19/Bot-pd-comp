@@ -5,7 +5,7 @@ import os
 from flask import Flask, jsonify
 import threading
 
-TOKEN = 'YOUR_TELEGRAM_BOT_TOKEN'
+TOKEN = '6239054864:AAGrtQ4d9_lzH0eOrrUEmtAdpFWs8sw7I2c'
 
 app = Flask(__name__)
 
