@@ -21,7 +21,10 @@ def compress_pdf(file_path):
 async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
     document = update.message.document
     file = await document.get_file()
-    file_path = await file.download()
+    
+    # Specify the local path to download the file
+    file_path = os.path.join(os.getcwd(), document.file_name)
+    await file.download(file_path)
 
     compressed_file_path = compress_pdf(file_path)
 
