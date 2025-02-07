@@ -1,5 +1,5 @@
 from telegram import Update
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
+from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
 import pikepdf
 import os
 from flask import Flask, jsonify
@@ -9,17 +9,16 @@ TOKEN = '6239054864:AAGrtQ4d9_lzH0eOrrUEmtAdpFWs8sw7I2c'
 
 app = Flask(__name__)
 
-def start(update: Update, context: CallbackContext):
+def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     update.message.reply_text('Kirimkan file PDF yang ingin Anda kompres.')
 
 def compress_pdf(file_path):
     output_path = 'compressed_' + os.path.basename(file_path)
-    # Menggunakan pikepdf untuk mengompres PDF
     with pikepdf.open(file_path) as pdf:
         pdf.save(output_path, compress_streams=True)
     return output_path
 
-def handle_document(update: Update, context: CallbackContext):
+def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
     document = update.message.document
     file = document.get_file()
     file_path = file.download()
@@ -40,12 +39,12 @@ def run_flask():
     app.run(host='0.0.0.0', port=8000)
 
 def main():
-    updater = Updater(TOKEN)
-    dp = updater.dispatcher
+    application = ApplicationBuilder().token(TOKEN).build()
+    dp = application.dispatcher
     dp.add_handler(CommandHandler("start", start))
-    dp.add_handler(MessageHandler(Filters.document.mime_type("application/pdf"), handle_document))
+    dp.add_handler(MessageHandler(filters.Document.MimeType("application/pdf"), handle_document))
 
-    updater.start_polling()
+    application.run_polling()
 
     # Start the Flask app in a separate thread
     flask_thread = threading.Thread(target=run_flask)
