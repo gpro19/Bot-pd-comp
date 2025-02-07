@@ -1,0 +1,3 @@
+python-telegram-bot==20.0  # Adjust the version as needed
+pikepdf==2.0.0              # Adjust the version as needed
+Flask==2.0.0                # Adjust the version as needed
