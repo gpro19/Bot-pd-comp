@@ -1,18 +1,17 @@
-# Use the official Python image
+# Use the official Python image from the Docker Hub
 FROM python:3.9-slim
 
-# Set the working directory
+# Set the working directory in the container
 WORKDIR /app
 
-# Copy requirements.txt and install dependencies
+# Copy the requirements file
 COPY requirements.txt .
+
+# Install the required packages
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the application code
+# Copy the rest of the code to the container
 COPY . .
 
-# Expose the port for Flask
-EXPOSE 8000
-
-# Command to run the bot and Flask app
+# Command to run the bot
 CMD ["python", "bot.py"]
