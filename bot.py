@@ -1,4 +1,4 @@
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram import Update
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
 import pikepdf
 import os
@@ -7,13 +7,12 @@ import threading
 
 TOKEN = '6239054864:AAGrtQ4d9_lzH0eOrrUEmtAdpFWs8sw7I2c'
 
-
 app = Flask(__name__)
 
 def start(update: Update, context: CallbackContext):
     update.message.reply_text('Kirimkan file PDF yang ingin Anda kompres.')
 
-def compress_pdf(file_path: str) -> str:  # Added return type
+def compress_pdf(file_path):
     output_path = 'compressed_' + os.path.basename(file_path)
     # Menggunakan pikepdf untuk mengompres PDF
     with pikepdf.open(file_path) as pdf:
@@ -40,7 +39,7 @@ def index():
 def run_flask():
     app.run(host='0.0.0.0', port=8000)
 
-def main() -> None:
+def main():
     updater = Updater(TOKEN)
     dp = updater.dispatcher
     dp.add_handler(CommandHandler("start", start))
