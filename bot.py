@@ -40,10 +40,12 @@ def run_flask():
 
 def main():
     application = ApplicationBuilder().token(TOKEN).build()
-    dp = application.dispatcher
-    dp.add_handler(CommandHandler("start", start))
-    dp.add_handler(MessageHandler(filters.Document.MimeType("application/pdf"), handle_document))
+    
+    # Add handlers directly to the application
+    application.add_handler(CommandHandler("start", start))
+    application.add_handler(MessageHandler(filters.Document.MimeType("application/pdf"), handle_document))
 
+    # Start the bot polling
     application.run_polling()
 
     # Start the Flask app in a separate thread
